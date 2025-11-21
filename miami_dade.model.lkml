@@ -1,6 +1,6 @@
 connection: "bigquery_public_data_looker"
 
-include: "views/*.view.lkml"                # include all views in the views/ folder in this project
+include: "/views/*.view.lkml" # Includes all your view files
 
 ## 1. student_performance Explore (KPIs: Proficiency, Equity, Instructional Capacity)
 
@@ -90,4 +90,3 @@ explore: staff_capacity {
   # NOTE: Since staffing.AvgGrowthIndex already exists, you don't need to join performance and calculate the average here,
   # making this Explore very efficient for the Instructional Capacity KPI.
 }
-
