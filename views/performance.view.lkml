@@ -1,5 +1,5 @@
 view: performance {
-  sql_table_name: `cloud-training-demos.k12_nwhs.performance`
+  sql_table_name: cloud-training-demos.k12_nwhs.performance
     ;;
 
   dimension: achievement_label {
@@ -92,8 +92,26 @@ view: performance {
     sql: ${TABLE}.Term ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: [course_name]
+  measure: students_proficient {
+    label: "Students Proficient (Latest Benchmark)"
+    type: sum
+    # Summing the flag counts students who are proficient
+    sql: ${proficient_flag} ;;
+    drill_fields: [student_id, teacher_id]
+  }
+
+  measure: distinct_students_tested {
+    label: "Distinct Students Tested"
+    type: count_distinct
+    sql: ${student_id} ;;
+    drill_fields: [student_id, teacher_id]
+  }
+
+  measure: proficiency_rate {
+    label: "Proficiency Rate (%)"
+    type: number
+    value_format: "0.00%"
+    # Formula: (Count of Proficient Students) / (Count of Students Tested)
+    sql: ${students_proficient} / NULLIF(${distinct_students_tested}, 0) ;;
   }
 }
